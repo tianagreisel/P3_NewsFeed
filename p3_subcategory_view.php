@@ -49,7 +49,13 @@ else{//bad data, you go away now!
 }
 
 
-$sql = "select * from wn16_subcategories where CategoryID=$id";
+//$sql = "select * from wn16_subcategories where CategoryID=$id";
+//inner join subcategories and categories table to get name of category to display on 
+//subcategories view page for clarification
+$sql = "select s.SubcategoryID, c.Name as CategoryName from wn16_subcategories s inner join wn16_categories c on 
+s.CategoryID = c.CategoryID where s.CategoryID=$id";
+
+
 
 
 //END CONFIG AREA ---------------------------------------------------------- 
@@ -70,6 +76,7 @@ if(mysqli_num_rows($result) > 0)
 	{# pull data from associative array
      $id = $row['SubcategoryID'];
       $subCategoryObjects[] = new Subcategory($id);
+        $category = $row['CategoryName']; //category name to display with subcategories
 	   
 	}
 }else{#no records
@@ -86,11 +93,15 @@ if(mysqli_num_rows($result) > 0)
 //END CONFIG AREA ---------------------------------------------------------- 
 
 get_header(); #defaults to header_inc.php
+
 ?>
-<h3 align="center">SubCategories</h3>
+
+<h3 align="left">Subcategories</h3>
 
 <?php
-
+/*
+<h2 align="center"><?=$category?></h2> <!--display category subcategories are coming from-->
+*/
 //$mySubcategory = new Subcategory($id);
 //dumpDie($mySubcategory);  //dump die is var_dump and die function Bill built for us
 foreach ($subCategoryObjects as $object){
@@ -98,7 +109,7 @@ foreach ($subCategoryObjects as $object){
     $object->getLink();
 }
 
-echo '<p><a href="index.php">BACK</a></p>';
+echo '<p><a href="p3_list.php">BACK</a></p>';
 
 get_footer(); #defaults to footer_inc.php
 

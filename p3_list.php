@@ -43,7 +43,8 @@ $sql = "select * from wn16_categories";
 
 get_header(); #defaults to header_inc.php
 ?>
-<h3 align="center">Categories</h3>
+<h1 align="center">News</h1>
+<h3 align="left">Categories</h3>
 
 <?php
 #IDB::conn() creates a shareable database connection via a singleton class

@@ -55,11 +55,14 @@ else{//bad data, you go away now!
 
 get_header(); #defaults to header_inc.php
 ?>
-<h3 align="center">News Feed</h3>
+<h2 align="center">News Feed</h2>
+
 
 <?php
 
 $myFeed = new Feed($id);
+$myFeed->getFeedTitle(); //use the Feed objects getFeedTitle() to display the subcategory 
+                            //to create heading of subcategory news being displayed
 
        $request = $myFeed->URL;
 //$request = "https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&topic=tc&output=rss";
@@ -89,7 +92,7 @@ foreach($newsFeedObjects as $feed){
 
 //dumpDie($mySurvey);  //dump die is var_dump and die function Bill built for us
 
-echo '<p><a href="index.php">BACK</a></p>';
+echo '<p><a href="p3_subcategory_view.php?id=' . $id . '">BACK</a></p>';
 
 get_footer(); #defaults to footer_inc.php
 
@@ -135,6 +138,16 @@ class Feed
     
     
     }#end Feed constructor 
-
-
+    
+    public function getFeedTitle(){
+        
+        echo '
+        <h3 align="left">' . $this->Title . ' News</h3>
+        
+        ';
+        
+        
+        
+    }
+  
 }

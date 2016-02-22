@@ -67,7 +67,7 @@ FOREIGN KEY (CategoryID) REFERENCES wn16_categories(CategoryID) ON DELETE CASCAD
 
 INSERT INTO wn16_subcategories VALUES (NULL,1,'NASA','All about NASA',NOW(),NOW());
 INSERT INTO wn16_subcategories VALUES (NULL,1,'Albert Einstein','All about Albert Einstein',NOW(),NOW());
-INSERT INTO wn16_subcategories VALUES (NULL,1,'Mars','All about Mars',NOW(),NOW());
+INSERT INTO wn16_subcategories VALUES (NULL,1,'Antarctica','All about Antarctica',NOW(),NOW());
 
 CREATE TABLE wn16_feeds(
 FeedID INT UNSIGNED NOT NULL AUTO_INCREMENT,
