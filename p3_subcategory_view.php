@@ -55,7 +55,11 @@ else{//bad data, you go away now!
 $sql = "select s.SubcategoryID, c.Name as CategoryName from wn16_subcategories s inner join wn16_categories c on 
 s.CategoryID = c.CategoryID where s.CategoryID=$id";
 
-
+if(!isset($_SESSION['current_categoryID'])){
+    $_SESSION['current_categoryID'] = $id;  //store the current CategoryID number
+    
+}
+$_SESSION['current_categoryID'] = $id;  //store the current CategoryID number
 
 
 //END CONFIG AREA ---------------------------------------------------------- 
@@ -76,6 +80,7 @@ if(mysqli_num_rows($result) > 0)
 	{# pull data from associative array
      $id = $row['SubcategoryID'];
       $subCategoryObjects[] = new Subcategory($id);
+        
         $category = $row['CategoryName']; //category name to display with subcategories
 	   
 	}
@@ -85,8 +90,32 @@ if(mysqli_num_rows($result) > 0)
 @mysqli_free_result($result);
 
 
+/*if(!isset($_SESSION['subcategory_objects'])){
+    
+    $_SESSION['subcategory_objects'] = $subCategoryObjects;
+}
 
+if(!isset($_SESSION['subcategory_time'])){
+    foreach($subCategoryObjects as $subcategoryObject){
+    $_SESSION['subcategory_time'] = $subcategoryObject->timeCreated;
+    }
+}
 
+//go through each subcategory object and update session subcategory time to time object created
+foreach($subCategoryObjects as $subcategoryObject){ 
+    $_SESSION['subcategory_time'] = $subcategoryObject->timeCreated;
+    }
+$time1 = $_SESSION['start_time'];
+$time2 = $_SESSION['subcategory_time'];
+$diff = date_diff($time1, $time2);
+$formatedDiff = $diff->format('%i');//format time difference into minutes and seconds
+
+//echo "$formatedDiff";
+if($formatedDiff > 15){
+    
+    //var_dump($time_in_session);
+    echo 'Your session has timed out';
+}*/
 
 
 
@@ -123,12 +152,13 @@ class Subcategory
     
     public $Description = '';
     
-    public $FeedObject;
+    public $timeCreated;
     
     public function __construct($id)
     {
     
         $this->SubcategoryID = (int)$id;
+        $this->timeCreated = new DateTime('now');  //store time Subcategory object created
     
         # SQL statement - PREFIX is optional way to distinguish your app
         $sql = "select * from wn16_subcategories where SubcategoryID=$this->SubcategoryID";

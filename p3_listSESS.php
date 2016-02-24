@@ -36,6 +36,21 @@ $config->nav1["page.php"] = "New Page!"; #add a new page to end of nav1 (viewabl
 $config->nav1 = array("page.php"=>"New Page!") + $config->nav1; #add a new page to beginning of nav1 (viewable this page only)!!
 */
 
+//if the session is not started, start the session (throws warning if session already started)
+if(!isset($_SESSION)){
+    session_start();
+
+}
+
+
+if(!isset($_SESSION['start_time'])){
+$_SESSION['start_time'] = new DateTime('now');
+};
+
+
+
+
+
 # SQL statement - PREFIX is optional way to distinguish your app
 $sql = "select * from wn16_categories";
 
@@ -65,4 +80,54 @@ if(mysqli_num_rows($result) > 0)
 }
 @mysqli_free_result($result);
 get_footer(); #defaults to footer_inc.php
+
+
+/*class Category
+{
+
+    public $CategoryID = 0;
+    
+    public $Name = '';
+    
+    public $Description = '';
+    
+
+    
+    public function __construct()
+    {
+    
+        
+    
+        # SQL statement - PREFIX is optional way to distinguish your app
+        $sql = "select * from wn16_categories";
+    
+        #IDB::conn() creates a shareable database connection via a singleton class
+        $result = mysqli_query(IDB::conn(),$sql) or                                                 die(trigger_error(mysqli_error(IDB::conn()), E_USER_ERROR));
+
+
+        if(mysqli_num_rows($result) > 0)
+        {#there are records - present data
+	       while($row = mysqli_fetch_assoc($result))
+            {# pull data from associative array
+	 
+            $this->CategoryID = $row['CategoryID'];
+            $this->Name = $row['Name'];
+            $this->Description = $row['Description'];
+
+	   }
+        }
+
+        
+
+        @mysqli_free_result($result);
+    
+    
+    }#end Subcategory constructor 
+
+    
+   
+	}*/
+       
+    
+
 ?>
