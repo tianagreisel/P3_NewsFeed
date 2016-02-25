@@ -1,5 +1,6 @@
 <?php
 
+include 'Subcategory.php';
 /**
 *  survey_view1.php a view page to show a single survey
 *
@@ -55,6 +56,12 @@ else{//bad data, you go away now!
 $sql = "select s.SubcategoryID, c.Name as CategoryName from wn16_subcategories s inner join wn16_categories c on 
 s.CategoryID = c.CategoryID where s.CategoryID=$id";
 
+if(!isset($_SESSION['current_categoryID'])){
+    $_SESSION['current_categoryID'] = $id;  //store the current CategoryID number
+    
+}
+$_SESSION['current_categoryID'] = $id;  //store the current CategoryID number
+
 
 
 
@@ -76,7 +83,9 @@ if(mysqli_num_rows($result) > 0)
 	{# pull data from associative array
      $id = $row['SubcategoryID'];
       $subCategoryObjects[] = new Subcategory($id);
+        
         $category = $row['CategoryName']; //category name to display with subcategories
+        
 	   
 	}
 }else{#no records
@@ -84,9 +93,39 @@ if(mysqli_num_rows($result) > 0)
 }
 @mysqli_free_result($result);
 
+//session_unset($_SESSION['subcategory_objects']);
+
+if(!isset($_SESSION['subcategory_objects'])){
+    
+    $_SESSION['subcategory_objects'] = $subCategoryObjects;
+}
+
+//update subcategory objects stored in session super global to current subcategories
+$_SESSION['subcategory_objects'] = $subCategoryObjects;
+//var_dump($subCategoryObjects);
 
 
+/*if(!isset($_SESSION['subcategory_time'])){
+    foreach($subCategoryObjects as $subcategoryObject){
+    $_SESSION['subcategory_time'] = $subcategoryObject->timeCreated;
+    }
+}
 
+//go through each subcategory object and update session subcategory time to time object created
+foreach($subCategoryObjects as $subcategoryObject){ 
+    $_SESSION['subcategory_time'] = $subcategoryObject->timeCreated;
+    }
+$time1 = $_SESSION['start_time'];
+$time2 = $_SESSION['subcategory_time'];
+$diff = date_diff($time1, $time2);
+$formatedDiff = $diff->format('%i');//format time difference into minutes and seconds
+
+//echo "$formatedDiff";
+if($formatedDiff > 15){
+    
+    //var_dump($time_in_session);
+    echo 'Your session has timed out';
+}*/
 
 
 
@@ -109,12 +148,12 @@ foreach ($subCategoryObjects as $object){
     $object->getLink();
 }
 
-echo '<p><a href="p3_list.php">BACK</a></p>';
+echo '<p><a href="index.php">BACK</a></p>';
 
 get_footer(); #defaults to footer_inc.php
 
 
-class Subcategory
+/*class Subcategory
 {
 
     public $SubcategoryID = 0;
@@ -123,12 +162,13 @@ class Subcategory
     
     public $Description = '';
     
-    public $FeedObject;
+    public $timeCreated;
     
     public function __construct($id)
     {
     
         $this->SubcategoryID = (int)$id;
+        $this->timeCreated = new DateTime('now');  //store time Subcategory object created
     
         # SQL statement - PREFIX is optional way to distinguish your app
         $sql = "select * from wn16_subcategories where SubcategoryID=$this->SubcategoryID";
@@ -162,7 +202,8 @@ class Subcategory
         
         <p>
 	  <a href="p3_feed-view.php?id=' . $this->SubcategoryID . '">' . $this->Name . '</a><br />
-	   Description: <b>' . $this->Description . '</b><br />
+      Description: <b>' . $this->Description . '</b><br />
+	   
 	   </p>';
 	}
         
@@ -175,5 +216,5 @@ class Subcategory
         
         
         
-    }
+    }*/
 
